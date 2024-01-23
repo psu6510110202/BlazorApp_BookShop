@@ -1,0 +1,62 @@
+﻿@page "/managebooks"
+
+@using OnlyBookShop.Data
+
+<h3>Book Lists</h3>
+<table class="responsive-table">
+    <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Price (Baht)</th>
+            <th>Pic URL</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in books)
+        {
+            <tr>
+                <td>@book.Id</td>
+                <td>@book.Name</td>
+                <td>@book.Description</td>
+                <td>@book.Author</td>
+                <td>@book.Year</td>
+                <td>@book.Price</td>
+                <td>@book.Url</td>
+                <td>
+                    <a href="editbook/@book.Id" class="btn btn-success btn-sm d-block mx-auto">Edit</a>
+                </td>
+            </tr>
+        }
+        
+    </tbody>
+</table>
+
+@foreach (var book in books)
+{
+    <div class="book-container">
+        <strong>Book ID: </strong>@book.Id <a href="editbook/@book.Id" class="btn btn-success btn-sm float-end">Edit</a><br>
+        <strong>Name: </strong>@book.Name<br>
+        <strong>Description: </strong>@book.Description<br>
+        <strong>Author: </strong>@book.Author<br>
+        <strong>Year: </strong>@book.Year<br>
+        <strong>Price (Baht): </strong>@book.Price<br>
+        <strong>Pic URL: </strong><a href="@book.Url">@book.Url</a>
+    </div>
+}
+
+@code {
+    private BookData[] books = new BookData[]
+        {
+        new BookData { Id = 0, Name = "Atomic Habits", Description = "บทพิสูจน์ที่เปลี่ยนชีวิตคุณให้ดีขึ้นได้อย่างถาวร โดย JAMES CLEAR นักเขียนหนังสือขายดีของ New York Times ผู้เชี่ยวชาญระดับโลกด้านการสร้างนิสัย", Author = "James Clear", Year = 2018, Price = 257, Url = "https://i.imgur.com/sUhDG4p.jpg"},
+        new BookData { Id = 1, Name = "SAPIENS", Description = "มาร่วมไขปัญหาที่ยิ่งใหญ่ที่สุดในประวัติศาสตร์และในโลกยุคใหม่ ใน SAPIENS เซเปียนส์ ประวัติย่อมนุษยชาติ หนังสือประวัติศาสตร์ มาแรงในขณะนี้", Author = "Yuval Noah Harari", Year = 2011, Price = 450, Url = "https://i.imgur.com/GkMHrkC.jpg"},
+        new BookData { Id = 2, Name = "THINK AGAIN คิดแล้ว, คิดอีก", Description = "think again หนังสือ แปลไทย จาก Adam Grant ..กล่าวถึง..พลังแห่งการตั้งคำถาม กับสิ่งที่คุณคิดว่าถูกต้อง", Author = "Adam Grant", Year = 2021, Price = 316, Url = "https://i.imgur.com/fvJhZ8h.jpg"},
+        new BookData { Id = 3, Name = "Four Thousand Weeks", Description = "คุณอาจไม่เคยรู้สึกว่า \"มีเวลาอย่างแท้จริง\" จนได้อ่านหนังสือเล่มนี้ หนังสือที่นักคิดด้านการพัฒนาตัวเองชั้นนำของโลกบอกว่า เป็นหนังสือด้านการบริหารเวลาที่ดีที่สุด แปลไปกว่า 23 ภาษา", Author = "Oliver Burkeman", Year = 2021, Price = 265, Url = "https://i.imgur.com/Eu3Ub3P.jpg"},
+        new BookData { Id = 4, Name = "Why We Sleep", Description = "หนังสือเล่มนี้คือคู่มือการนอนหลับฉบับสมบูรณ์ที่มีข้อมูลทางวิทยาศาสตร์รองรับ ซึ่งไม่เพียงถ่ายทอดเคล็ดลับที่ช่วยให้คุณนอนหลับอย่างมีคุณภาพทุกคืน แต่ยังฟื้นฟูศักยภาพ ในการใช้ชีวิตอย่างเปี่ยมพลังในทุกๆ วัน", Author = "Matthew Walker", Year = 2017, Price = 372, Url = "https://i.imgur.com/sS5yrKg.jpg"}
+
+        };
+}

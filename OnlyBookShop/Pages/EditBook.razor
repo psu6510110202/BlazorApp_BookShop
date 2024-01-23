@@ -1,0 +1,75 @@
+﻿@page "/editbook/{id:int}"
+
+@using OnlyBookShop.Data
+@inject IJSRuntime JS
+
+<h3>EditBook @Id</h3>
+
+<div class="container vertical-form">
+    <div class="row">
+        <EditForm Model="@editModel">
+            <div class="col-md-6">
+                <label for="bookId" class="form-label">Book ID</label>
+                <select class="form-select" id="bookId" aria-label="Default select example">
+                    <option selected value="@Id">@Id</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <strong><label for="name" class="form-label">Name</label></strong>
+                <InputText class="form-control" id="name" placeholder="ABC" @bind-Value="@editModel.Name"/>
+            </div>
+            <div class="col-md-6">
+                <strong><label for="description" class="form-label">Description</label></strong>
+                <InputTextArea class="form-control" id="description" rows="3" @bind-Value="@editModel.Description"/>
+            </div>
+            <div class="col-md-6">
+                <strong><label for="author" class="form-label">Author</label></strong>
+                <InputText class="form-control" type="text" id="author" placeholder="John Cena" @bind-Value="@editModel.Author"/>
+            </div>
+            <div class="col-md-6">
+                <strong><label for="year" class="form-label">Year</label></strong>
+                <InputNumber class="form-control" type="number" id="year" placeholder="0" @bind-Value="@editModel.Year"/>
+            </div>
+            <div class="col-md-6">
+                <strong><label for="price" class="form-label">Price (Baht)</label></strong>
+                <InputNumber class="form-control" type="number" id="price" placeholder="0" @bind-Value="@editModel.Price"/>
+            </div>
+            <div class="col-md-6">
+                <strong><label for="picUrl" class="form-label">Pic URL</label></strong>
+                <InputText class="form-control" type="text" id="picUrl" placeholder="www.abc.com/abc.jpg" aria-label="URL Picture" @bind-Value="@editModel.Url"/>
+            </div>
+        </EditForm>
+    </div>
+    <div style="margin-top: 10px; margin-left: 20px">
+        <button type="button" class="btn btn-secondary " onclick="history.back()">Cancel</button>
+        <button type="button" class="btn btn-success ">Update Book</button>
+    </div>
+</div>
+
+
+<div class="book-container">
+    <strong>Book ID: </strong>
+    <EditForm Model="@editModel">
+        <select class="form-select" aria-label="Default select example">
+            <option selected value="@Id">@Id</option>
+        </select><br>
+        <strong>Name: </strong><InputText class="form-control" id="name" placeholder="ABC" @bind-Value="@editModel.Name" /><br>
+        <strong>Description: </strong><InputTextArea class="form-control" id="description" rows="3" @bind-Value="@editModel.Description" /><br>
+        <strong>Author: </strong><InputText class="form-control" type="text" id="author" placeholder="John Cena" @bind-Value="@editModel.Author" /><br>
+        <strong>Year: </strong><InputNumber class="form-control" type="number" id="year" placeholder="0" @bind-Value="@editModel.Year" /><br>
+        <strong>Price (Baht): </strong><InputNumber class="form-control" type="number" id="price" placeholder="0" @bind-Value="@editModel.Price" /><br>
+        <strong>Pic URL: </strong><InputText class="form-control" type="text" id="picUrl" placeholder="www.abc.com/abc.jpg" aria-label="URL Picture" @bind-Value="@editModel.Url" />
+    </EditForm> 
+    <div style="margin-top: 10px; display: flex; justify-content:center">
+        <button type="button" class="btn btn-secondary" style="margin-right: 5px" onclick="history.back()">Cancel</button>
+        <button type="button" class="btn btn-success ">Update Book</button>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private BookData editModel = new BookData();
+}

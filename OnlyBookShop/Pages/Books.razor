@@ -1,4 +1,5 @@
 ﻿@page "/books"
+@using OnlyBookShop.Data
 
 <header class="masthead py-4">
     <div class="container px-2 px-lg-5 my-1">
@@ -12,106 +13,40 @@
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-3 justify-content-center">
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <img class="card-img-top" src="https://i.imgur.com/sUhDG4p.jpg" />
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <h5 class="fw-bolder">Atomic Habits</h5>
-                            <p>บทพิสูจน์ที่เปลี่ยนชีวิตคุณให้ดีขึ้นได้อย่างถาวร โดย JAMES CLEAR นักเขียนหนังสือขายดีของ New York Times ผู้เชี่ยวชาญระดับโลกด้านการสร้างนิสัย</p>
+            @foreach (var book in books)
+            {
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="@book.Url" />
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h5 class="fw-bolder">@book.Name</h5>
+                                <p>@book.Description</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Author : @book.Author </li>
+                                <li class="list-group-item">Year : @book.Year </li>
+                                <li class="list-group-item">Price : @book.Price Baht</li>
+                            </ul>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Author : James Clear </li>
-                            <li class="list-group-item">Year : 2018 </li>
-                            <li class="list-group-item">Price : 257 Baht</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Buy now</a></div>
-                    </div> 
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <img class="card-img-top" src="https://i.imgur.com/GkMHrkC.jpg" />
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <h5 class="fw-bolder">SAPIENS</h5>
-                            <p>มาร่วมไขปัญหาที่ยิ่งใหญ่ที่สุดในประวัติศาสตร์และในโลกยุคใหม่ ใน SAPIENS เซเปียนส์ ประวัติย่อมนุษยชาติ หนังสือประวัติศาสตร์ มาแรงในขณะนี้</p>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Buy now</a></div>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Author : Yuval Noah Harari </li>
-                            <li class="list-group-item">Year : 2011 </li>
-                            <li class="list-group-item">Price : 450 Baht</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Buy now</a></div>
                     </div>
                 </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <img class="card-img-top" src="https://i.imgur.com/fvJhZ8h.jpg" />
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <h5 class="fw-bolder">THINK AGAIN คิดแล้ว, คิดอีก</h5>
-                            <p>think again หนังสือ แปลไทย จาก Adam Grant ..กล่าวถึง..พลังแห่งการตั้งคำถาม กับสิ่งที่คุณคิดว่าถูกต้อง</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Author : Adam Grant </li>
-                            <li class="list-group-item">Year : 2021 </li>
-                            <li class="list-group-item">Price : 316 Baht</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Buy now</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <img class="card-img-top" src="https://i.imgur.com/Eu3Ub3P.jpg" />
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <h5 class="fw-bolder">Four Thousand Weeks</h5>
-                            <p>
-                               คุณอาจไม่เคยรู้สึกว่า "มีเวลาอย่างแท้จริง" จนได้อ่านหนังสือเล่มนี้ หนังสือที่นักคิดด้านการพัฒนาตัวเองชั้นนำของโลกบอกว่า เป็นหนังสือด้านการบริหารเวลาที่ดีที่สุด แปลไปกว่า 23 ภาษา
-                            </p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Author : Oliver Burkeman </li>
-                            <li class="list-group-item">Year : 2021 </li>
-                            <li class="list-group-item">Price : 265 Baht</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Buy now</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <img class="card-img-top" src="https://i.imgur.com/sS5yrKg.jpg" />
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <h5 class="fw-bolder">Why We Sleep</h5>
-                            <p>หนังสือเล่มนี้คือคู่มือการนอนหลับฉบับสมบูรณ์ที่มีข้อมูลทางวิทยาศาสตร์รองรับ ซึ่งไม่เพียงถ่ายทอดเคล็ดลับที่ช่วยให้คุณนอนหลับอย่างมีคุณภาพทุกคืน แต่ยังฟื้นฟูศักยภาพ ในการใช้ชีวิตอย่างเปี่ยมพลังในทุกๆ วัน</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Author : Matthew Walker </li>
-                            <li class="list-group-item">Year : 2017 </li>
-                            <li class="list-group-item">Price : 372 Baht</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Buy now</a></div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </section>
-@code {
 
+@code {
+    private BookData[] books = new BookData[]
+        {
+        new BookData { Id = 0, Name = "Atomic Habits", Description = "บทพิสูจน์ที่เปลี่ยนชีวิตคุณให้ดีขึ้นได้อย่างถาวร โดย JAMES CLEAR นักเขียนหนังสือขายดีของ New York Times ผู้เชี่ยวชาญระดับโลกด้านการสร้างนิสัย", Author = "James Clear", Year = 2018, Price = 257, Url = "https://i.imgur.com/sUhDG4p.jpg"},
+        new BookData { Id = 1, Name = "SAPIENS", Description = "มาร่วมไขปัญหาที่ยิ่งใหญ่ที่สุดในประวัติศาสตร์และในโลกยุคใหม่ ใน SAPIENS เซเปียนส์ ประวัติย่อมนุษยชาติ หนังสือประวัติศาสตร์ มาแรงในขณะนี้", Author = "Yuval Noah Harari", Year = 2011, Price = 450, Url = "https://i.imgur.com/GkMHrkC.jpg"},
+        new BookData { Id = 2, Name = "THINK AGAIN คิดแล้ว, คิดอีก", Description = "think again หนังสือ แปลไทย จาก Adam Grant ..กล่าวถึง..พลังแห่งการตั้งคำถาม กับสิ่งที่คุณคิดว่าถูกต้อง", Author = "Adam Grant", Year = 2021, Price = 316, Url = "https://i.imgur.com/fvJhZ8h.jpg"},
+        new BookData { Id = 3, Name = "Four Thousand Weeks", Description = "คุณอาจไม่เคยรู้สึกว่า \"มีเวลาอย่างแท้จริง\" จนได้อ่านหนังสือเล่มนี้ หนังสือที่นักคิดด้านการพัฒนาตัวเองชั้นนำของโลกบอกว่า เป็นหนังสือด้านการบริหารเวลาที่ดีที่สุด แปลไปกว่า 23 ภาษา", Author = "Oliver Burkeman", Year = 2021, Price = 265, Url = "https://i.imgur.com/Eu3Ub3P.jpg"},
+        new BookData { Id = 4, Name = "Why We Sleep", Description = "หนังสือเล่มนี้คือคู่มือการนอนหลับฉบับสมบูรณ์ที่มีข้อมูลทางวิทยาศาสตร์รองรับ ซึ่งไม่เพียงถ่ายทอดเคล็ดลับที่ช่วยให้คุณนอนหลับอย่างมีคุณภาพทุกคืน แต่ยังฟื้นฟูศักยภาพ ในการใช้ชีวิตอย่างเปี่ยมพลังในทุกๆ วัน", Author = "Matthew Walker", Year = 2017, Price = 372, Url = "https://i.imgur.com/sS5yrKg.jpg"}
+
+        };
 }
