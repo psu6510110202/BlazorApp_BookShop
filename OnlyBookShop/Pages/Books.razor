@@ -1,5 +1,6 @@
 ﻿@page "/books"
 @using OnlyBookShop.Data
+@inject IDbContextFactory<BookDbContext> BookDbFactory
 
 <header class="masthead py-4">
     <div class="container px-2 px-lg-5 my-1">
@@ -40,7 +41,7 @@
 </section>
 
 @code {
-    private BookData[] books = new BookData[]
+    /*    private BookData[] books = new BookData[]
         {
         new BookData { Id = 0, Name = "Atomic Habits", Description = "บทพิสูจน์ที่เปลี่ยนชีวิตคุณให้ดีขึ้นได้อย่างถาวร โดย JAMES CLEAR นักเขียนหนังสือขายดีของ New York Times ผู้เชี่ยวชาญระดับโลกด้านการสร้างนิสัย", Author = "James Clear", Year = 2018, Price = 257, Url = "https://i.imgur.com/sUhDG4p.jpg"},
         new BookData { Id = 1, Name = "SAPIENS", Description = "มาร่วมไขปัญหาที่ยิ่งใหญ่ที่สุดในประวัติศาสตร์และในโลกยุคใหม่ ใน SAPIENS เซเปียนส์ ประวัติย่อมนุษยชาติ หนังสือประวัติศาสตร์ มาแรงในขณะนี้", Author = "Yuval Noah Harari", Year = 2011, Price = 450, Url = "https://i.imgur.com/GkMHrkC.jpg"},
@@ -48,5 +49,14 @@
         new BookData { Id = 3, Name = "Four Thousand Weeks", Description = "คุณอาจไม่เคยรู้สึกว่า \"มีเวลาอย่างแท้จริง\" จนได้อ่านหนังสือเล่มนี้ หนังสือที่นักคิดด้านการพัฒนาตัวเองชั้นนำของโลกบอกว่า เป็นหนังสือด้านการบริหารเวลาที่ดีที่สุด แปลไปกว่า 23 ภาษา", Author = "Oliver Burkeman", Year = 2021, Price = 265, Url = "https://i.imgur.com/Eu3Ub3P.jpg"},
         new BookData { Id = 4, Name = "Why We Sleep", Description = "หนังสือเล่มนี้คือคู่มือการนอนหลับฉบับสมบูรณ์ที่มีข้อมูลทางวิทยาศาสตร์รองรับ ซึ่งไม่เพียงถ่ายทอดเคล็ดลับที่ช่วยให้คุณนอนหลับอย่างมีคุณภาพทุกคืน แต่ยังฟื้นฟูศักยภาพ ในการใช้ชีวิตอย่างเปี่ยมพลังในทุกๆ วัน", Author = "Matthew Walker", Year = 2017, Price = 372, Url = "https://i.imgur.com/sS5yrKg.jpg"}
 
-        };
+    };
+    */
+    private List<BookData> books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var dbcontext = await BookDbFactory.CreateDbContextAsync();
+        books = dbcontext.BookDatas.ToList();
+    }
+
 }

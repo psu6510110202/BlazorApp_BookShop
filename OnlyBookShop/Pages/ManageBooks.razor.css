@@ -2,39 +2,32 @@
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    overflow-x: auto; /* Add horizontal scroll for small screens */
+    overflow-x: auto;
 }
 
-    /* Style for table headers */
     .responsive-table th {
         background-color: #f2f2f2;
     }
 
-    /* Style for table cells */
     .responsive-table td, .responsive-table th {
         padding: 8px;
         border: 1px solid #ddd;
         text-align: left;
     }
 
-/* Responsive styles for the table */
 @media only screen and (max-width: 600px) {
-    /* Hide the table on small screens */
     .responsive-table {
         display: none;
     }
 }
 
-/* Style for the book container */
 .book-container {
     margin-bottom: 20px;
-    border: 1px solid #ddd; /* Add border for better separation */
+    border: 1px solid #ddd; 
     padding: 10px;
 }
 
-/* Responsive styles for the book container */
 @media only screen and (min-width: 601px) {
-    /* Hide book containers on larger screens */
     .book-container {
         display: none;
     }

@@ -1,0 +1,92 @@
+﻿@page "/deletebook/{id:int}"
+
+@using OnlyBookShop.Data;
+@inject IDbContextFactory<BookDbContext> BookDbFactory;
+@inject IJSRuntime JS
+
+<h3>Delete Book Id = @Id</h3>
+
+<table class="responsive-table">
+    <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Price (Baht)</th>
+            <th>Pic URL</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@editModel.Id</td>
+            <td>@editModel.Name</td>
+            <td>@editModel.Description</td>
+            <td>@editModel.Author</td>
+            <td>@editModel.Year</td>
+            <td>@editModel.Price</td>
+            <td>@editModel.Url</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="book-container">
+    <strong>Book ID: </strong>@editModel.Id><br>
+    <strong>Name: </strong>@editModel.Name<br>
+    <strong>Description: </strong>@editModel.Description<br>
+    <strong>Author: </strong>@editModel.Author<br>
+    <strong>Year: </strong>@editModel.Year<br>
+    <strong>Price (Baht): </strong>@editModel.Price<br>
+    <strong>Pic URL: </strong><a href="@editModel.Url">@editModel.Url</a>
+</div>
+
+<button class="btn btn-danger btn-sm d-block mx-auto" @onclick="RemoveData">Confirm Delete</button>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private BookData editModel = new BookData();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        using var dbcontext = BookDbFactory.CreateDbContext();
+        var data = dbcontext.BookDatas.SingleOrDefault(w => w.Id == Id);
+        if (data is not null)
+        {
+            editModel = new BookData
+                {
+                    Id = data.Id,
+                    Name = data.Name,
+                    Description = data.Description,
+                    Author = data.Author,
+                    Year = data.Year,
+                    Price = data.Price,
+                    Url = data.Url
+                };
+        }
+        else
+        {
+            editModel = new BookData
+                {
+                    Id = -1
+                };
+        }
+    }
+
+    private async void RemoveData()
+    {
+        using var dbcontext = BookDbFactory.CreateDbContext();
+        var data = dbcontext.BookDatas.SingleOrDefault(w => w.Id == Id);
+        if (data is not null)
+        {
+            dbcontext.BookDatas.Remove(data);
+            dbcontext.SaveChanges();
+        }
+        await JS.InvokeVoidAsync("history.back");
+    }
+}
