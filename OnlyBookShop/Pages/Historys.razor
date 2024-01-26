@@ -1,0 +1,79 @@
+﻿@page "/historys"
+
+@using OnlyBookShop.Data
+@inject IDbContextFactory<BookDbContext> BookDbFactory
+
+<h3>Historys</h3>
+
+<table class="responsive-table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>DateTime</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trans in transactions)
+        {
+            @if (trans.TransactionDetails != null && trans.TransactionDetails.Any())
+            {
+                for (int i = 0; i < trans.TransactionDetails.Count; i++)
+                {
+                    <tr>
+                        @if (i == 0) 
+                        {
+                            <td rowspan="@trans.TransactionDetails.Count">@trans.Id</td>
+                            <td rowspan="@trans.TransactionDetails.Count">@trans.Date</td>
+                        }
+                        <td>@trans.TransactionDetails[i].Name</td>
+                        <td>@trans.TransactionDetails[i].Amount</td>
+                        <td>@trans.TransactionDetails[i].Price Baht</td>
+                        @if (i == 0)
+                        {
+                            <td rowspan="@trans.TransactionDetails.Count">@trans.TotalPrice Baht</td>
+                        }
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+
+@foreach (var trans in transactions)
+{
+    <div class="book-container">
+        <p class="order-info"><strong>Order ID:</strong> @trans.Id</p>
+        <p class="order-info"><strong>Date:</strong> @trans.Date</p>
+
+        @if (trans.TransactionDetails != null && trans.TransactionDetails.Any())
+        {
+            <p class="order-info"><strong>Order Lists</strong></p>
+            <ul class="order-list">
+                @foreach (var detail in trans.TransactionDetails)
+                {
+                    <li>@detail.Name x @detail.Amount - @detail.Price Baht</li>
+                }
+            </ul>
+        }
+
+        <p class="order-info"><strong>Total price:</strong> @trans.TotalPrice Baht</p>
+    </div>
+}
+
+
+
+@code {
+    private List<Transaction> transactions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var dbcontext = await BookDbFactory.CreateDbContextAsync();
+        transactions = dbcontext.Transactions
+            .Include(t => t.TransactionDetails)  
+            .ToList();
+    }
+}

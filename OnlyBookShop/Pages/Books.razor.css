@@ -6,7 +6,7 @@ header.masthead {
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-size: cover;
-    max-height: 300px; /* Adjust the value based on your requirements */
+    max-height: 300px;
 }
 
     header.masthead h1,

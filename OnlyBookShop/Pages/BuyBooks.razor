@@ -1,0 +1,255 @@
+﻿@page "/buybooks"
+
+<h3>Buy Books</h3>
+
+@using OnlyBookShop.Data
+@inject IDbContextFactory<BookDbContext> BookDbFactory
+
+<table class="responsive-table">
+    <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Author</th>
+            <th>Year</th>
+            <th>Price (Baht)</th>
+            <th>Pic URL</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in books)
+        {
+            <tr>
+                <td>@book.Id</td>
+                <td>@book.Name</td>
+                <td>@book.Description</td>
+                <td>@book.Author</td>
+                <td>@book.Year</td>
+                <td>@book.Price</td>
+                <td>@book.Url</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@foreach (var book in books)
+{
+    <div class="book-container">
+        <strong>Book ID: </strong>@book.Id<br>
+        <strong>Name: </strong>@book.Name<br>
+        <strong>Description: </strong>@book.Description<br>
+        <strong>Author: </strong>@book.Author<br>
+        <strong>Year: </strong>@book.Year<br>
+        <strong>Price (Baht): </strong>@book.Price<br>
+        <strong>Pic URL: </strong><a href="@book.Url">@book.Url</a>
+    </div>
+}
+
+<EditForm Model="@editTrans" OnValidSubmit="@BuyBook">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>Book ID</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Total price (Batht)</th>
+                <th>Option</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <InputSelect class="form-control" type="text" placeholder="ABC" id="Name" @bind-Value="@SelectedIndex">
+                        <option value="">Select Book</option>
+                        @{
+                            int count = 0;
+                            @foreach (var data in books)
+                            {
+                                <option value="@count">@data.Id</option>
+                                count++;
+                            }
+                        }
+
+                    </InputSelect>
+                </td>
+                <td>
+                    @(editTrans.Name = editModel.Name)
+                </td>
+                <td>
+                    <InputNumber class="form-control" min=1 type="number"  id="Amount" @bind-Value="@editTrans.Amount" />
+                </td>
+                <td>
+                    @(@editModel.Price * @editTrans.Amount)
+                </td>
+                <td><button type="submit" class="btn btn-outline-success add-lg">Add</button></td>
+            </tr>
+        </tbody>
+    </table>
+    
+</EditForm>
+
+<EditForm Model="@editTrans" OnValidSubmit="@BuyBook">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="book-container">
+        <strong>Book Id: </strong>
+            <InputSelect class="form-control" type="text" placeholder="ABC" id="Name" @bind-Value="@SelectedIndex">
+                <option value="">Select Book</option>
+                @{
+                    int count = 0;
+                    @foreach (var data in books)
+                    {
+                        <option value="@count">@data.Id</option>
+                        count++;
+                    }
+                }
+            </InputSelect>
+            <br>
+        <strong>Name: </strong>@(editTrans.Name = editModel.Name)<br>
+        <strong>Amount: </strong><InputNumber class="form-control" min=1 type="number" id="Amount" @bind-Value="@editTrans.Amount" /><br>
+        <strong>Price (Baht): </strong>@(@editModel.Price * @editTrans.Amount)<br>
+    </div>
+    <button type="submit" class="btn btn-outline-success float-end add-sm">Add</button><br><br>
+</EditForm>
+
+ <h3>Order Lists</h3>
+<table class="responsive-table">
+    <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Price (Baht)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (transactionDetails != null && transactionDetails.Count > 0)
+        {
+            @foreach (var trans in transactionDetails)
+            {
+                <tr>
+                    <td>@trans.Id</td>
+                    <td>@trans.Name</td>
+                    <td>@trans.Amount</td>
+                    <td>@trans.Price</td>
+                </tr>
+            }
+
+            <tr>
+                <td colspan="3" class="text-end"><strong>Total Price:</strong></td>
+                <td>@TotalPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button type="button" class="btn btn-success float-end add-lg" @onclick="ConfirmOrder" disabled="@(transactionDetails.Count < 1)">Confirm Order</button>
+<button type="button" class="btn btn-danger float-end add-lg" style="margin-right: 5px" @onclick="ClearOrder">Clear</button>
+
+
+
+
+<div class="book-container">
+     @if (transactionDetails != null && transactionDetails.Count > 0)
+    {
+        @foreach (var trans in transactionDetails)
+        {
+            <p><strong>Book ID: @trans.Id</strong> @trans.Name x @trans.Amount -> @trans.Price Baht</p>
+        }
+        <br><strong>TotalPrice: </strong>@TotalPrice
+        <button type="button" class="btn btn-success float-end btn-sm add-sm" @onclick="ConfirmOrder">Confirm Order</button>
+        <button type="button" class="btn btn-danger float-end btn-sm add-sm" @onclick="ClearOrder">Clear</button>
+
+    }
+</div>
+
+@code {
+    private List<BookData> books;
+
+    private List<TransactionDetail> transactionDetails = new List<TransactionDetail>(); 
+
+    private BookData editModel = new BookData();
+
+    private TransactionDetail editTrans = new TransactionDetail();
+
+    private int TotalPrice = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var dbcontext = await BookDbFactory.CreateDbContextAsync();
+        books = dbcontext.BookDatas.ToList();
+        if (books.Count > 0)
+        {
+            SelectedIndex = 0;
+        }
+        editTrans.Amount = 1;
+    }
+
+    private int _selectedIndex;
+    private int SelectedIndex
+    {
+        get => _selectedIndex;
+        set
+        {
+            _selectedIndex = value;
+            editModel = books[_selectedIndex];
+            editTrans.Amount = 1;
+        }
+    }
+
+    private void BuyBook()
+    {
+        var transactionDetail = new TransactionDetail
+            {
+                Id = editModel.Id,
+                Name = editModel.Name,
+                Amount = editTrans.Amount,
+                Price = editModel.Price * editTrans.Amount
+            };
+        TotalPrice += editModel.Price * editTrans.Amount;
+        editTrans.Amount = 1;
+        transactionDetails.Add(transactionDetail);
+    }
+
+    private async Task ConfirmOrder()
+    {
+        using var dbcontext = await BookDbFactory.CreateDbContextAsync();
+
+        var utcNow = DateTime.UtcNow;
+        var utcPlus7 = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(utcNow, "SE Asia Standard Time");
+
+        var transaction = new Transaction
+            {
+                Date = utcPlus7,
+                TotalPrice = TotalPrice,
+                TransactionDetails = new List<TransactionDetail>()
+            };
+
+        foreach (var trans in transactionDetails)
+        {
+            transaction.TransactionDetails.Add(new TransactionDetail
+                {
+                    Name = trans.Name,
+                    Amount = trans.Amount,
+                    Price = trans.Price
+                });
+        }
+
+        dbcontext.Transactions.Add(transaction);
+        dbcontext.SaveChanges();
+
+        transactionDetails.Clear();
+
+        TotalPrice = 0;
+        editModel = new BookData();
+        books = dbcontext.BookDatas.ToList();
+    }
+
+    private void ClearOrder()
+    {
+        transactionDetails.Clear();
+    }
+}

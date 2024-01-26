@@ -29,7 +29,8 @@
                 <td>@book.Price</td>
                 <td>@book.Url</td>
                 <td>
-                    <a href="editbook/@book.Id" class="btn btn-success btn-sm d-block mx-auto">Edit</a>
+                    <a href="viewbook/@book.Id" class="btn btn-warning btn-sm d-block mx-auto">View</a>
+                    <a href="editbook/@book.Id" class="btn btn-success btn-sm d-block mx-auto" style="margin-top: 5px">Edit</a>
                     <a href="deletebook/@book.Id" class="btn btn-danger btn-sm d-block mx-auto" style="margin-top: 5px">Delete</a>
                 </td>
             </tr>
@@ -41,9 +42,10 @@
 @foreach (var book in books)
 {
     <div class="book-container">
-        <strong>Book ID: </strong>@book.Id 
-            <a href="deletebook/@book.Id" class="btn btn-danger btn-sm float-end">Delete</a>
-            <a href="editbook/@book.Id" class="btn btn-success btn-sm float-end" style="margin-right: 2%">Edit</a><br>
+        <strong>Book ID: </strong>@book.Id
+        <a href="deletebook/@book.Id" class="btn btn-danger btn-sm float-end">Delete</a>
+        <a href="editbook/@book.Id" class="btn btn-success btn-sm float-end" style="margin-right: 2%">Edit</a>
+        <a href="viewbook/@book.Id" class="btn btn-warning btn-sm float-end" style="margin-right: 2%">View</a><br>
         <strong>Name: </strong>@book.Name<br>
         <strong>Description: </strong>@book.Description<br>
         <strong>Author: </strong>@book.Author<br>

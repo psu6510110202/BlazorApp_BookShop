@@ -1,0 +1,64 @@
+﻿@page "/viewbook/{id:int}"
+
+@using OnlyBookShop.Data
+@inject IDbContextFactory<BookDbContext> BookDbFactory
+
+@if (editModel.Id != -1)
+{
+    <h2>View Book ID @editModel.Id</h2>
+    <div class="container mt-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4 text-center">
+                <img src="@editModel.Url" class="img-fluid rounded" alt="Book Image">
+            </div>
+            <div class="col-md-8">
+                <h3 class="text-center">@editModel.Name</h3>
+                <p class="text-center">@editModel.Description</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Author: @editModel.Author</li>
+                    <li class="list-group-item">Year: @editModel.Year</li>
+                    <li class="list-group-item">Price: @editModel.Price</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1>Id is invalid or Not have data</h1>
+}
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private BookData editModel = new BookData();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        using var dbcontext = BookDbFactory.CreateDbContext();
+        var data = dbcontext.BookDatas.SingleOrDefault(w => w.Id == Id);
+        if (data is not null)
+        {
+            editModel = new BookData
+                {
+                    Id = data.Id,
+                    Name = data.Name,
+                    Description = data.Description,
+                    Author = data.Author,
+                    Year = data.Year,
+                    Price = data.Price,
+                    Url = data.Url
+                };
+        }
+        else
+        {
+            editModel = new BookData
+                {
+                    Id = -1
+                };
+        }
+    }
+}
